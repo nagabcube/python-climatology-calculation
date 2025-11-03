@@ -442,7 +442,7 @@ def main():
     parser.add_argument('--db-path',
                        type=str, 
                        #required=True,
-                       default='data/nemti.db',
+                       default='data/output.db',
                        help='Jövőbeli csapadékadatok SQLite fájlja')
     parser.add_argument('--weights-file',
                        default='weights/climatology_weights_hourly.csv',
@@ -488,4 +488,5 @@ def main():
     print("="*50)
 
 if __name__ == '__main__':
+
     main()
