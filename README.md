@@ -164,6 +164,7 @@ assert abs(sum(hourly_values) - threehourly_total) < 1e-6
 - Python 3.12+
 - sqlite3 (beépített)
 - math (beépített)
+- pandas (dataframe kezelés)
 - datetime (beépített)
 - hecdss (DSS export)
 
@@ -177,6 +178,13 @@ python scripts/petcalc_01.py
 ### Adatbázis struktúra
 
 ```sql
+-- PR tábla (csapadék)
+CREATE TABLE pr (
+    time TEXT,      -- 'YYYY-MM-DD HH:MM'  
+    cell_id INTEGER,
+    pr REAL         -- mm/h
+);
+
 -- TAS tábla (hőmérséklet)
 CREATE TABLE tas (
     time TEXT,      -- 'YYYY-MM-DD HH:MM'
