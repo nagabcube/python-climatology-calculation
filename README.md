@@ -113,15 +113,13 @@ assert abs(sum(hourly_values) - threehourly_total) < 1e-6
 
 ## 🏆 Összefoglalás
 
-**A sztochasztikus disaggregáció pontosan azt csinálja, amit a szakmai plénum kért:**
-
 ✅ **Véletlenszerűség:** Minden 3-órás értékhez más órás eloszlás  
 ✅ **Klimatológiai alap:** Múltbeli valós mintázatok  
 ✅ **Időszak érzékenység:** Év-hónap/év-negyedév relációk  
 ✅ **Konzisztencia:** 3-órás összegek megmaradnak  
 ✅ **Meteorológiai realizmus:** WMO szabványok szerinti módszer  
 
-PET Számítás
+### PET Számítás
 
 ## Áttekintés
 
