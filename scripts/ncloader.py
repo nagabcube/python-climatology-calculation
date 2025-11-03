@@ -13,7 +13,7 @@
     python scripts\ncloader.py --directory-name --db-file (opcionális)
 
 Kimenetek: 
-    DB: data/nemti.db
+    DB: data/output.db
 
 Szerző: nagabcube
 Dátum: 2025-10
@@ -156,10 +156,10 @@ def main():
     parser.add_argument('--directory-name',
                         type=str, 
                         #required=True,
-                        default='../ncfiles',
+                        default='ncfiles',
                         help='A netCDF fájlok könytárának útvonala/neve')
     parser.add_argument('--db-path',
-                        default='data/nemti.db',
+                        default='data/output.db',
                         help='Az SQLite fájl útvonala/neve')
     args = parser.parse_args()
 
@@ -209,4 +209,5 @@ def main():
     print("=" * 50)
 
 if __name__ == '__main__':
+
     main()
