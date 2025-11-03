@@ -1,0 +1,210 @@
+# 🎲 Sztochasztikus Csapadék Disaggregáció
+
+## 📋 Mi Ez és Miért Kell?
+
+A **sztochasztikus disaggregáció** egy meteorológiai módszer, amely véletlenszerűen felbontja a jövőbeli 3-órás csapadékadatokat órás értékekre, a múltbeli klimatológiai mintázatok alapján.
+
+### 🎯 Alapelv
+
+**Input:** 
+- Jövőbeli 3-órás csapadékértékek (2026-2100, `output.db`)
+- Múltbeli klimatológiai súlyok (2021-2025, év-hónap/év-negyedév)
+
+**Folyamat:**
+1. **Időszak azonosítás:** Melyik hónapba/negyedévbe esik a jövőbeli adat?
+2. **Véletlenszerű választás:** Melyik múltbeli évből vegyük a súlyokat?
+3. **Disaggregáció:** 3-órás → 3×1-órás értékek
+
+**Output:** 
+- Órás csapadékértékek, amelyek megtartják a 3-órás összeget
+- Meteorológiai realizmust biztosító változékonyság
+
+## 🔬 Példa a Véletlenszerűségre
+
+### Konkrét Eset: 2026. január 15., 0.5 mm csapadék
+
+**Rendelkezésre álló múltbeli január súlyok:**
+```
+2023-01: [0.399, 0.255, 0.346]  →  [0.199, 0.127, 0.173] mm
+2024-01: [0.348, 0.262, 0.390]  →  [0.174, 0.131, 0.195] mm  
+2025-01: [0.287, 0.356, 0.357]  →  [0.144, 0.178, 0.179] mm
+```
+
+**Minden futtatáskor más eredmény:**
+- A script **véletlenszerűen** választ a 3 lehetséges múltbeli január közül
+- Ugyanaz a 0.5 mm háromféleképpen oszlik meg óránként
+- Az összeg mindig 0.5 mm marad ✅
+
+### 📊 Statisztikai Változékonyság
+
+15 véletlenszerű választás alapján:
+```
+Órás csapadék átlag: [0.178, 0.139, 0.183] mm
+Órás csapadék szórás: [0.021, 0.020, 0.010] mm  
+Variációs koefficiens: [0.116, 0.141, 0.055]
+```
+
+## 🛠️ Implementáció
+
+### Létrehozott Scripts
+
+1. **`stochastic_disaggregation.py`** - Fő disaggregációs engine
+2. **`demonstrate_stochastic_behavior.py`** - Viselkedés demonstrációja
+
+### Futtatás
+
+```bash
+# Év-hónap alapú disaggregáció (teljes adatbázis)
+python stochastic_disaggregation.py --method year_month
+
+# Év-negyedév alapú disaggregáció (teljes adatbázis)  
+python stochastic_disaggregation.py --method year_quarter
+
+# Tesztelés kis mintán
+python stochastic_disaggregation.py --method year_month --limit-rows 1000
+```
+
+## 🎯 Meteorológiai Jelentőség
+
+### ✅ Miért Helyes Ez a Módszer?
+
+1. **Klimatológiai Alapozás**
+   - Múltbeli valós mintázatok használata
+   - Szezonális variabilitás figyelembevétele
+   - Évjáratok közötti különbségek
+
+2. **Sztochasztikus Realizmus**
+   - Véletlenszerűség → természetes változékonyság
+   - Nem determinisztikus → több lehetséges kimenet
+   - Ensemble modellezéshez alkalmas
+
+3. **Konzisztencia**
+   - 3-órás összegek megmaradnak
+   - Numerikus stabilitás
+   - Fizikai értelemben helyes
+
+4. **Flexibilitás**
+   - Év-hónap: Finomabb felbontás
+   - Év-negyedév: Robosztusabb statisztika
+   - Testreszabható random seed
+
+## 🔧 Szakmai Paraméterek
+
+### Random Seed Kezelés
+```python
+# Reprodukálható eredményekhez
+--random-seed 42
+
+# Minden rekordhoz különböző seed
+random_seed = base_seed + record_index
+```
+
+### Időszak Mapping
+```python
+# Év-hónap: 2026-01 → múltbeli január súlyok közül véletlenszerűen
+# Év-negyedév: 2026-Q1 → múltbeli Q1 súlyok közül véletlenszerűen  
+```
+
+### Quality Control
+```python
+# Minden disaggregált rekordnál:
+assert abs(sum(hourly_values) - threehourly_total) < 1e-6
+```
+
+## 🏆 Összefoglalás
+
+**A sztochasztikus disaggregáció pontosan azt csinálja, amit a szakmai plénum kért:**
+
+✅ **Véletlenszerűség:** Minden 3-órás értékhez más órás eloszlás  
+✅ **Klimatológiai alap:** Múltbeli valós mintázatok  
+✅ **Időszak érzékenység:** Év-hónap/év-negyedév relációk  
+✅ **Konzisztencia:** 3-órás összegek megmaradnak  
+✅ **Meteorológiai realizmus:** WMO szabványok szerinti módszer  
+
+PET Számítás
+
+## Áttekintés
+
+Ez a projekt adatbázisból számít potenciális evapotranspirációt (PET) a HEC-HMS hidrológiai modellezéshez.
+
+## Adatok
+
+- **Forrás**: output.db SQLite adatbázis
+- **Táblák**: `tas` (hőmérséklet), `rsds` (sugárzás)
+- **Időszak**: 2026-01-01 - 2100-12-31 (75 év)
+- **Cell-ek**: 4 db (269222, 269223, 270222, 270223)
+- **Összesen**: 109,572 napi érték
+
+## PET Számítás
+
+- **Módszer**: Priestley-Taylor egyenlet
+- **Formula**: PET = α × (Δ/(Δ+γ)) × Rn
+- **Paraméterek**:
+  - α = 1.26 (Priestley-Taylor koefficients)
+  - γ = 0.65 hPa/°C (pszichrometrikus konstans)
+  - Δ = telítési páranyomás görbe meredeksége
+  - Rn = nettó sugárzás [MJ/m²/nap]
+
+## Eredmények
+
+- **Átlagos éves PET**: ~2,750 mm/év
+- **Téli minimum**: 0.6-0.9 mm/nap (január, december)
+- **Nyári maximum**: 15-16 mm/nap (június, július)
+- **Napi tartomány**: 0.02-27 mm/nap
+
+## Fájlok
+
+### Alapfájlok
+
+- `petcalc_01.py` - Alap PET kalkulátor
+
+### Eredmény fájlok
+
+- `pet_cell_[ID]_hec.dss` - HEC-HMS importálható formátum
+
+## HEC-HMS Használat
+
+### 1. Adatimport módszerek
+
+1. HEC-DSSVue megnyitása
+2. Tools → Scripting → Import Text Files
+3. HEC formátumú txt fájlok kiválasztása
+4. Beállítások:
+
+- File Type: Time Series
+- Date Format: YYYY-MM-DD
+- Units: MM
+- Interval: 1DAY
+
+### Függőségek
+
+- Python 3.12+
+- sqlite3 (beépített)
+- math (beépített)
+- datetime (beépített)
+- hecdss (DSS export)
+
+### Futtatás
+
+```bash
+# Alap PET számítás
+python scripts/petcalc_01.py
+```
+
+### Adatbázis struktúra
+
+```sql
+-- TAS tábla (hőmérséklet)
+CREATE TABLE tas (
+    time TEXT,      -- 'YYYY-MM-DD HH:MM'
+    cell_id INTEGER,
+    tas REAL        -- Celsius
+);
+
+-- RSDS tábla (sugárzás)
+CREATE TABLE rsds (
+    time TEXT,      -- 'YYYY-MM-DD HH:MM'  
+    cell_id INTEGER,
+    rsds REAL       -- W/m²
+);
+```
