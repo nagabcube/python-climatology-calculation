@@ -119,7 +119,7 @@ assert abs(sum(hourly_values) - threehourly_total) < 1e-6
 ✅ **Konzisztencia:** 3-órás összegek megmaradnak  
 ✅ **Meteorológiai realizmus:** WMO szabványok szerinti módszer  
 
-# Potenciális evapotranspirációt (PET) a HEC-HMS hidrológiai modellezéshez.
+# Potenciális evapotranspiráció (PET) számítása HEC-HMS hidrológiai modellezéshez.
 
 ## Adatok
 
