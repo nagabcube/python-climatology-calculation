@@ -115,7 +115,7 @@ assert abs(sum(hourly_values) - threehourly_total) < 1e-6
 - **Forrás**: output.db SQLite adatbázis
 - **Táblák**: `tas` (hőmérséklet), `rsds` (sugárzás)
 - **Időszak**: 2026-01-01 - 2100-12-31 (75 év)
-- **Cell-ek**: 4 db (269222, 269223, 270222, 270223)
+- **Cell-ek**: 4 db
 - **Összesen**: 109,572 napi érték
 
 ## PET Számítás
@@ -123,7 +123,7 @@ assert abs(sum(hourly_values) - threehourly_total) < 1e-6
 - **Módszer**: Priestley-Taylor egyenlet
 - **Formula**: PET = α × (Δ/(Δ+γ)) × Rn
 - **Paraméterek**:
-  - α = 1.26 (Priestley-Taylor koefficients)
+  - α = 1.26 (Priestley-Taylor koefficiens)
   - γ = 0.65 hPa/°C (pszichrometrikus konstans)
   - Δ = telítési páranyomás görbe meredeksége
   - Rn = nettó sugárzás [MJ/m²/nap]
@@ -144,20 +144,6 @@ assert abs(sum(hourly_values) - threehourly_total) < 1e-6
 ### Eredmény fájlok
 
 - `pet_cell_[ID]_hec.dss` - HEC-HMS importálható formátum
-
-## HEC-HMS Használat
-
-### 1. Adatimport módszerek
-
-1. HEC-DSSVue megnyitása
-2. Tools → Scripting → Import Text Files
-3. HEC formátumú txt fájlok kiválasztása
-4. Beállítások:
-
-- File Type: Time Series
-- Date Format: YYYY-MM-DD
-- Units: MM
-- Interval: 1DAY
 
 ### Függőségek
 
