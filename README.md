@@ -46,23 +46,12 @@ Variációs koefficiens: [0.116, 0.141, 0.055]
 
 ## 🛠️ Implementáció
 
-### Létrehozott Scripts
+### Létrehozott szkriptek
 
-1. **`stochastic_disaggregation.py`** - Fő disaggregációs engine
-2. **`demonstrate_stochastic_behavior.py`** - Viselkedés demonstrációja
-
-### Futtatás
-
-```bash
-# Év-hónap alapú disaggregáció (teljes adatbázis)
-python stochastic_disaggregation.py --method year_month
-
-# Év-negyedév alapú disaggregáció (teljes adatbázis)  
-python stochastic_disaggregation.py --method year_quarter
-
-# Tesztelés kis mintán
-python stochastic_disaggregation.py --method year_month --limit-rows 1000
-```
+1. **`ncloader.py`** - GERICS adatok adatbázisba (SQLite) töltése, dátum standardizálások, hőmérséleti adaatok átalakítása, csapadék adatok mm/s->mm/h átalakítása
+2. **`prcalc_01.py`** - Múltbeli csapadék adatok 1 órás aggregálása CSV fájlból
+3. **`prcalc_02.py`** - Klimatológiai súlyok létrehozása órás időskálán
+4. **`prcalc_03.py`** - Fő disaggregációs engine
 
 ## 🎯 Meteorológiai Jelentőség
 
