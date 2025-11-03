@@ -126,7 +126,7 @@ class HecDSSExporter:
             dss_file = os.path.join(output_dir, f"pet_cell_{cell_id}_hec.dss")
             
             # DSS pathname (HEC 7.0 formátum)
-            pathname = f"/NEMTI/CELL_{cell_id}/PET//1DAY/CALCULATED/"
+            pathname = f"/OUTPUT/CELL_{cell_id}/PET//1DAY/CALCULATED/"
             
             print(f"Cell {cell_id} DSS export...")
             print(f"  Pathname: {pathname}")
@@ -196,7 +196,7 @@ def main():
     parser.add_argument('--db-path',
                         type=str, 
                         #required=True,
-                        default='data/nemti.db',
+                        default='data/output.db',
                         help='SQLite adatbázis a TAS és RSDS adatokkal')
     args = parser.parse_args()
 
@@ -212,4 +212,5 @@ def main():
         print(f"\n❌ DSS export sikertelen")
 
 if __name__ == "__main__":
+
     main()
