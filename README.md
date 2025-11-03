@@ -8,10 +8,10 @@ A **sztochasztikus disaggregáció** egy meteorológiai módszer, amely véletle
 
 **Input:** 
 - Jövőbeli 3-órás csapadékértékek (2026-2100, `output.db`)
-- Múltbeli klimatológiai súlyok (2021-2025, év-hónap/év-negyedév)
+- Múltbeli klimatológiai súlyok (2021-2025, év-hónap-óra/év-hónap)
 
 **Folyamat:**
-1. **Időszak azonosítás:** Melyik hónapba/negyedévbe esik a jövőbeli adat?
+1. **Időszak azonosítás:** Melyik órára/napra/hónapba esik a jövőbeli adat?
 2. **Véletlenszerű választás:** Melyik múltbeli évből vegyük a súlyokat?
 3. **Disaggregáció:** 3-órás → 3×1-órás értékek
 
@@ -73,8 +73,8 @@ Variációs koefficiens: [0.116, 0.141, 0.055]
    - Fizikai értelemben helyes
 
 4. **Flexibilitás**
-   - Év-hónap: Finomabb felbontás
-   - Év-negyedév: Robosztusabb statisztika
+   - Év-hónap-óra: Finomabb felbontás
+   - Év-hónap: Robosztusabb statisztika
    - Testreszabható random seed
 
 ## 🔧 Szakmai Paraméterek
@@ -88,23 +88,11 @@ Variációs koefficiens: [0.116, 0.141, 0.055]
 random_seed = base_seed + record_index
 ```
 
-### Időszak Mapping
-```python
-# Év-hónap: 2026-01 → múltbeli január súlyok közül véletlenszerűen
-# Év-negyedév: 2026-Q1 → múltbeli Q1 súlyok közül véletlenszerűen  
-```
-
-### Quality Control
-```python
-# Minden disaggregált rekordnál:
-assert abs(sum(hourly_values) - threehourly_total) < 1e-6
-```
-
 ## 🏆 Összefoglalás
 
 ✅ **Véletlenszerűség:** Minden 3-órás értékhez más órás eloszlás  
 ✅ **Klimatológiai alap:** Múltbeli valós mintázatok  
-✅ **Időszak érzékenység:** Év-hónap/év-negyedév relációk  
+✅ **Időszak érzékenység:** Év-hónap-óra/év-hónap relációk  
 ✅ **Konzisztencia:** 3-órás összegek megmaradnak  
 ✅ **Meteorológiai realizmus:** WMO szabványok szerinti módszer  
 
