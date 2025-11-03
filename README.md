@@ -48,7 +48,7 @@ Variációs koefficiens: [0.116, 0.141, 0.055]
 
 ### Létrehozott szkriptek
 
-1. **`ncloader.py`** - GERICS adatok adatbázisba (SQLite) töltése, dátum standardizálások, hőmérséleti adaatok átalakítása, csapadék adatok mm/s->mm/h átalakítása
+1. **`ncloader.py`** - GERICS adatok adatbázisba (SQLite) töltése, dátum standardizálások, hőmérséleti adatok (K->°C), csapadék adatok (mm/s->mm/h) átalakítása
 2. **`prcalc_01.py`** - Múltbeli csapadék adatok 1 órás aggregálása CSV fájlból
 3. **`prcalc_02.py`** - Klimatológiai súlyok létrehozása órás időskálán
 4. **`prcalc_03.py`** - Fő disaggregációs engine
