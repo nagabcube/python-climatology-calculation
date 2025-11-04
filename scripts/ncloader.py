@@ -156,7 +156,7 @@ def main():
     parser.add_argument('--directory-name',
                         type=str, 
                         #required=True,
-                        default='../ncfiles',
+                        default='ncfiles',
                         help='A netCDF fájlok könytárának útvonala/neve')
     parser.add_argument('--db-path',
                         default='data/basin.db',
@@ -209,4 +209,5 @@ def main():
     print("=" * 50)
 
 if __name__ == '__main__':
+
     main()
